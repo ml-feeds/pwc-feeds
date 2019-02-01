@@ -12,14 +12,14 @@ def configure_logging() -> None:
 
 CACHE_TTL = datetime.timedelta(hours=2, minutes=-4).total_seconds()
 FEED_DESCRIPTION = 'As a disclaimer, this is an unofficial feed and has no affiliation with Papers with Code.'
-FEED_TITLE = 'Papers with Code: {path} (unofficial)'
+FEED_TITLE_TEMPLATE = 'Papers with Code: {feed_type} (unofficial)'
 FEED_TYPES = {'trending', 'latest', 'greatest'}
 HTML_HEXT = """
 <h1><a href^="/paper/" href:prepend("https://paperswithcode.com"):link @text:title/></h1>
 <p class="item-strip-abstract" @text:description/>
 <p><?a><span class="badge badge-primary" @text:categories/></a></p>
 """
-HTML_URL = 'https://paperswithcode.com'
+HTML_URL_BASE = 'https://paperswithcode.com/'
 ON_SERVERLESS = bool(os.getenv('GCLOUD_PROJECT'))
 PACKAGE_NAME = Path(__file__).parent.stem
 
