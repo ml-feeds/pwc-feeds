@@ -13,4 +13,7 @@ def serve(request: flask.Request) -> Tuple[bytes, int, Dict[str, str]]:
     hget = request.headers.get
     log.info('Received request for path %s from %s from %s, %s, %s.', request.path, hget('X-Appengine-User-Ip'),
              hget('X-Appengine-City'), hget('X-Appengine-Region'), hget('X-Appengine-Country'))
-    return feed.feed(request.path), 200, {'Content-Type': 'text/xml; charset=utf-8'}
+    if request.path is None:
+        raise flask.abort(404)
+    path = request.path[1:]  # Strip /
+    return feed.feed(path), 200, {'Content-Type': 'text/xml; charset=utf-8'}
