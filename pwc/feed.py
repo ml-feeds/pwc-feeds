@@ -1,6 +1,6 @@
 from functools import lru_cache
 import logging
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 from cachetools.func import ttl_cache
 from feedgen.feed import FeedGenerator
@@ -17,10 +17,12 @@ log = logging.getLogger(__name__)
 class Feed:
 
     def __init__(self, feed_type: str):
+        html_url_suffix = feed_type if feed_type != "trending" else ''
+        html_url = f'{config.HTML_URL_BASE}{html_url_suffix}'
+        self._html_request = Request(html_url, headers={'User-Agent': config.USER_AGENT})
+
         self._feed_type = feed_type
         self._feed_desc = f'for "{self._feed_type}"'
-        html_url_suffix = feed_type if feed_type != "trending" else ''
-        self._html_url = f'{config.HTML_URL_BASE}{html_url_suffix}'
         self._feed = FeedGenerator()
         self._hext_rule_extract = Rule(config.HTML_HEXT).extract
         self._is_debug_logged = log.isEnabledFor(logging.DEBUG)
@@ -44,6 +46,7 @@ class Feed:
             entry.guid(item['link'], permalink=True)
             entry.description(item['description'])
             for category in item['categories']:
+                category = category.capitalize() if category.isupper() else category
                 entry.category(term=category)
             if is_debug_logged:
                 log.debug('Added: %s', item['title'])
@@ -63,7 +66,7 @@ class Feed:
     def feed(self) -> bytes:
         feed_desc = self._feed_desc
         log.debug(f'Reading HTML %s.', feed_desc)
-        text = urlopen(self._html_url).read()
+        text = urlopen(self._html_request).read()
         log.info('HTML input %s has size %s.', feed_desc, humanize_len(text))
         text = self._output(text)
         log.info('XML output %s has size %s.', feed_desc, humanize_len(text))
