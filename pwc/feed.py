@@ -28,10 +28,10 @@ class Feed:
         self._is_debug_logged = log.isEnabledFor(logging.DEBUG)
         self._init_feed()
 
-        self._output = lru_cache(maxsize=1)(self._output)  # Instance level cache
-        self.feed = ttl_cache(maxsize=1, ttl=config.CACHE_TTL)(self.feed)  # Instance level cache
+        self._output = lru_cache(maxsize=1)(self._output)  # type: ignore  # Instance level cache
+        self.feed = ttl_cache(maxsize=1, ttl=config.CACHE_TTL)(self.feed)  # type: ignore  # Instance level cache
 
-    def _output(self, text: bytes) -> bytes:
+    def _output(self, text: bytes) -> bytes:  # type: ignore
         feed_desc = self._feed_desc
         items = self._hext_rule_extract(Html(text.decode()))
         log.info('HTML input %s has %s items.', feed_desc, len(items))
@@ -66,7 +66,7 @@ class Feed:
         feed.link(href=config.REPO_URL, rel='self')
         feed.description(config.FEED_DESCRIPTION)
 
-    def feed(self) -> bytes:
+    def feed(self) -> bytes:  # type: ignore
         feed_desc = self._feed_desc
         log.debug(f'Reading HTML %s.', feed_desc)
         text = urlopen(self._html_request).read()
