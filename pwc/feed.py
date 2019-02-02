@@ -37,7 +37,9 @@ class Feed:
         feed = self._feed
         is_debug_logged = self._is_debug_logged
         for item in items:
-            if isinstance(item['categories'], str):
+            if 'categories' not in item:
+                item['categories'] = []
+            elif isinstance(item['categories'], str):
                 item['categories'] = [item['categories']]
 
             entry = feed.add_entry(order='append')
@@ -57,7 +59,7 @@ class Feed:
 
     def _init_feed(self) -> None:
         feed = self._feed
-        title = config.FEED_TITLE_TEMPLATE.format(feed_type=self._feed_type)
+        title = config.FEED_TITLE_TEMPLATE.format(feed_type=self._feed_type.title())
         feed.title(title)
         feed.link(href=config.REPO_URL, rel='self')
         feed.description(config.FEED_DESCRIPTION)
