@@ -20,7 +20,7 @@ def serve(request: flask.Request) -> Tuple[bytes, int, Dict[str, str]]:
 
     if request.path not in VALID_PATHS:
         request_path = '' if request.path is None else request.path
-        return f'Request path "{request_path}" is invalid. Use one of: {VALID_PATHS_STR}', 400
+        return f'The requested path "{request_path}" is invalid. Use one of: {VALID_PATHS_STR}', 400
 
     feed_type = request.path[1:]  # Strip "/"
     feed = FEEDS[feed_type]
