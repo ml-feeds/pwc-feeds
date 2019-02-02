@@ -5,7 +5,7 @@ As a disclaimer, it has no affiliation with Papers With Code.
 ## Links
 * [Project repo](https://github.com/ml-feeds/pwc-feeds)
 * Original HTML listing: [Trending](https://paperswithcode.com/) | [Latest](https://paperswithcode.com/latest) | [Greatest](https://paperswithcode.com/greatest)
-* Unofficial RSS feeds: [Trending](https://us-east1-ml-feeds.cloudfunctions.net/pwc-feeds/trending) | [Latest](https://us-east1-ml-feeds.cloudfunctions.net/pwc-feeds/latest) | [Greatest](https://us-east1-ml-feeds.cloudfunctions.net/pwc-feeds/greatest)
+* **Unofficial RSS feeds: [Trending](https://us-east1-ml-feeds.cloudfunctions.net/pwc-feeds/trending) | [Latest](https://us-east1-ml-feeds.cloudfunctions.net/pwc-feeds/latest) | [Greatest](https://us-east1-ml-feeds.cloudfunctions.net/pwc-feeds/greatest)**
 
 ## Deployment
 Serverless deployment to [Google Cloud Functions](https://console.cloud.google.com/functions/) is configured.
