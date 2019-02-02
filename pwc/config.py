@@ -23,7 +23,7 @@ HTML_URL_BASE = 'https://paperswithcode.com/'
 ON_SERVERLESS = bool(os.getenv('GCLOUD_PROJECT'))
 PACKAGE_NAME = Path(__file__).parent.stem
 REPO_URL = 'https://github.com/ml-feeds/pwc-feeds'
-USER_AGENT = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:64.0) Gecko/20100101 Firefox/64.0'
+USER_AGENT = 'Mozilla/5.0'
 
 LOGGING = {  # Ref: https://docs.python.org/3/howto/logging.html#configuring-logging
     'version': 1,
