@@ -11,7 +11,7 @@ As a disclaimer, it has no affiliation with Papers With Code.
 Serverless deployment to [Google Cloud Functions](https://console.cloud.google.com/functions/) is configured.
 It requires the the following files:
 * requirements.txt
-* main.py (having callable `serve(request: flask.Request) -> Tuple[bytes, int, Dict[str, str]]`)
+* main.py (having callable `serve(request: flask.Request) -> Tuple[Union[bytes, str], int, Dict[str, str]]`)
 
 Deployment version updates are not automated.
 They can be performed manually by editing and saving the function configuration.
