@@ -1,19 +1,14 @@
 import logging
-import time
 
+from pwc import config
 from pwc.feed import Feed
 
 log = logging.getLogger(__name__)
 
 if __name__ == '__main__':
-    feed = Feed('trending')
-    try:
-        output = feed.feed()
-        print(output.decode())
-
-        log.info('Testing cachetools cache.')
-        assert feed.feed() == output
-        log.info('Tested cachetools cache.')
-    except Exception:
-        time.sleep(.01)  # Delay for logs to flush.
-        raise
+    feeds = [Feed(feed_type) for feed_type in config.FEED_TYPES]
+    outputs1 = {feed: feed.feed().decode() for feed in feeds}
+    outputs2 = {feed: feed.feed().decode() for feed in feeds}
+    for o1, o2 in zip(outputs1.values(), outputs2.values()):
+        assert o1 == o2
+        print(o1)
