@@ -15,7 +15,7 @@ VALID_PATHS_STR = ', '.join(VALID_PATHS)
 
 def serve(request: flask.Request) -> Tuple[bytes, int, Dict[str, str]]:
     hget = request.headers.get
-    log.info('Received request for path %s from %s from %s, %s, %s.', request.path, hget('X-Appengine-User-Ip'),
+    log.info('Received request for "%s" from %s from %s, %s, %s.', request.path, hget('X-Appengine-User-Ip'),
              hget('X-Appengine-City'), hget('X-Appengine-Region'), hget('X-Appengine-Country'))
 
     if request.path not in VALID_PATHS:
