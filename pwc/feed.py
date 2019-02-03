@@ -31,6 +31,13 @@ class Feed:
         self._output = lru_cache(maxsize=1)(self._output)  # type: ignore  # Instance level cache
         self.feed = ttl_cache(maxsize=1, ttl=config.CACHE_TTL)(self.feed)  # type: ignore  # Instance level cache
 
+    def _init_feed(self) -> FeedGenerator:
+        feed = FeedGenerator()
+        feed.title(self._feed_title)
+        feed.link(href=config.REPO_URL, rel='self')
+        feed.description(config.FEED_DESCRIPTION)
+        return feed
+
     def _output(self, text: bytes) -> bytes:  # type: ignore
         feed_type_desc = self._feed_type_desc
         items = self._hext_rule_extract(Html(text.decode()))
@@ -58,13 +65,6 @@ class Feed:
         text_: bytes = feed.rss_str(pretty=True)
         log.info('XML output %s has %s items.', feed_type_desc, text_.count(b'<item>'))
         return text_
-
-    def _init_feed(self) -> FeedGenerator:
-        feed = FeedGenerator()
-        feed.title(self._feed_title)
-        feed.link(href=config.REPO_URL, rel='self')
-        feed.description(config.FEED_DESCRIPTION)
-        return feed
 
     def feed(self) -> bytes:  # type: ignore
         feed_type_desc = self._feed_type_desc
