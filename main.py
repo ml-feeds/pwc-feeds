@@ -21,7 +21,7 @@ def serve(request: flask.Request) -> Tuple[Union[bytes, str], int, Dict[str, str
     if request.path not in VALID_PATHS:
         request_path = '' if request.path is None else request.path
         msg = f'The requested path "{request_path}" is invalid. Valid paths are: {VALID_PATHS_STR}'
-        log.error('Error processing request from %s: %s', hget('X-Appengine-User-Ip'), msg)
+        log.error('Error handling request from %s: %s', hget('X-Appengine-User-Ip'), msg)
         return f'ERROR: {msg}', 400, {'Content-Type': 'text/plain; charset=utf-8'}
 
     feed_type = request.path[1:]  # Strip leading "/".
