@@ -10,7 +10,7 @@ def configure_logging() -> None:
     log.debug('Logging is configured.')
 
 
-CACHE_TTL = datetime.timedelta(hours=2, minutes=-4).total_seconds()
+CACHE_TTL = datetime.timedelta(minutes=20).total_seconds()
 FEED_DESCRIPTION = 'As a disclaimer, this is an unofficial feed and has no affiliation with Papers with Code.'
 FEED_TITLE_TEMPLATE = 'Papers with Code: {feed_type} (unofficial)'
 FEED_TYPES = {'trending', 'latest', 'greatest'}
