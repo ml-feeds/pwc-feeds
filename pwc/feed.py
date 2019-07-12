@@ -55,7 +55,8 @@ class Feed:
             entry.title(item['title'])
             entry.link(href=item['link'])
             entry.guid(item['link'], permalink=True)
-            entry.description(item['description'])
+            description = '\n\n'.join((item['description'], item['code_link']))
+            entry.description(description)
             for category in item['categories']:
                 category = category.capitalize() if category.isupper() else category
                 entry.category(term=category)

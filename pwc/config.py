@@ -16,6 +16,7 @@ FEED_TITLE_TEMPLATE = 'Papers with Code: {feed_type} (unofficial)'
 FEED_TYPES = {'trending', 'latest', 'greatest'}
 HTML_HEXT = """
 <h1><a href^="/paper/" href:prepend("https://paperswithcode.com"):link @text:title/></h1>
+<p><a href:code_link/></p>
 <p class="item-strip-abstract" @text:description/>
 <p><?a><span class="badge badge-primary" @text:categories/></a></p>
 """
