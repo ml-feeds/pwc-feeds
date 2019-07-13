@@ -6,6 +6,7 @@ from cachetools.func import ttl_cache
 from feedgen.feed import FeedGenerator
 from hext import Html, Rule
 from humanize import naturalsize
+from lxml.etree import CDATA
 
 from pwc import config
 
@@ -38,7 +39,7 @@ class Feed:
         feed.description(config.FEED_DESCRIPTION)
         return feed
 
-    def _output(self, text: bytes) -> bytes:  # type: ignore
+    def _output(self, text: bytes) -> bytes:
         feed_type_desc = self._feed_type_desc
         items = self._hext_rule_extract(Html(text.decode()))
         log.info('HTML input %s has %s items.', feed_type_desc, len(items))
@@ -55,8 +56,9 @@ class Feed:
             entry.title(item['title'])
             entry.link(href=item['link'])
             entry.guid(item['link'], permalink=True)
-            description = '\n\n'.join((item['description'], item['code_link']))
-            entry.description(description)
+            # description = '\n\n'.join((item['description'], item['code_link']))
+            description = f'{item["description"]} <p>Code: <a href="{item["code_link"]}">{item["code_link"]}</a></p>'
+            entry.description(CDATA(description))
             for category in item['categories']:
                 category = category.capitalize() if category.isupper() else category
                 entry.category(term=category)
@@ -67,7 +69,7 @@ class Feed:
         log.info('XML output %s has %s items.', feed_type_desc, text_.count(b'<item>'))
         return text_
 
-    def feed(self) -> bytes:  # type: ignore
+    def feed(self) -> bytes:
         feed_type_desc = self._feed_type_desc
         log.debug(f'Reading HTML %s.', feed_type_desc)
         text = urlopen(self._html_request).read()
