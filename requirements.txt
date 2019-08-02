@@ -12,8 +12,8 @@ hext==0.2.3
 humanize==0.5.1
 itsdangerous==1.1.0       # via flask
 jinja2==2.10.1            # via flask
-lxml==4.3.4               # via feedgen
+lxml==4.4.0               # via feedgen
 markupsafe==1.1.1         # via jinja2
 python-dateutil==2.8.0    # via feedgen
 six==1.12.0               # via python-dateutil
-werkzeug==0.15.4          # via flask
+werkzeug==0.15.5          # via flask
