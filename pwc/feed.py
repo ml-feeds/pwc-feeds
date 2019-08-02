@@ -1,5 +1,7 @@
 from functools import lru_cache
+import json
 import logging
+from typing import cast, Tuple
 from urllib.request import Request, urlopen
 
 from cachetools.func import ttl_cache
@@ -7,6 +9,7 @@ from feedgen.feed import FeedGenerator
 from hext import Html, Rule
 from humanize import naturalsize
 from lxml.etree import CDATA
+from more_itertools import unique_everseen
 
 from pwc import config
 
@@ -19,8 +22,9 @@ class Feed:
 
     def __init__(self, feed_type: str):
         html_url_suffix = feed_type if feed_type != "trending" else ''
-        html_url = f'{config.HTML_URL_BASE}{html_url_suffix}'
-        self._html_request = Request(html_url, headers={'User-Agent': config.USER_AGENT})
+        html_urls = [f'{config.HTML_URL_BASE}{html_url_suffix}?page={page_num}' for page_num in
+                     range(1, config.NUM_PAGES_READ[feed_type] + 1)]
+        self._html_requests = [Request(html_url, headers={'User-Agent': config.USER_AGENT}) for html_url in html_urls]
 
         self._feed_type = feed_type
         self._feed_type_desc = f'for "{self._feed_type}"'
@@ -39,10 +43,11 @@ class Feed:
         feed.description(config.FEED_DESCRIPTION)
         return feed
 
-    def _output(self, text: bytes) -> bytes:
+    def _output(self, texts: Tuple[bytes, ...]) -> bytes:
         feed_type_desc = self._feed_type_desc
-        items = self._hext_rule_extract(Html(text.decode()))
-        log.info('HTML input %s has %s items.', feed_type_desc, len(items))
+        items = [item for text in texts for item in self._hext_rule_extract(Html(text.decode()))]
+        items = list(unique_everseen(items, json.dumps))
+        log.info('HTML inputs %s have %s items in all.', feed_type_desc, len(items))
 
         feed = self._init_feed()
         is_debug_logged = self._is_debug_logged
@@ -71,10 +76,10 @@ class Feed:
 
     def feed(self) -> bytes:
         feed_type_desc = self._feed_type_desc
-        log.debug(f'Reading HTML %s.', feed_type_desc)
-        text = urlopen(self._html_request).read()
-        log.info('HTML input %s has size %s.', feed_type_desc, humanize_len(text))
-        text = self._output(text)
+        log.debug(f'Reading %s HTML pages %s.', len(self._html_requests), feed_type_desc)
+        texts = tuple(cast(bytes, urlopen(html_request).read()) for html_request in self._html_requests)
+        log.info('HTML inputs %s have sizes: %s', feed_type_desc, ', '.join(humanize_len(text) for text in texts))
+        text = self._output(texts)
         log.info('XML output %s has size %s.', feed_type_desc, humanize_len(text))
         return text
 
