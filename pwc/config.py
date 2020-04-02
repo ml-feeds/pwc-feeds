@@ -21,7 +21,7 @@ HTML_HEXT = """
 <p><?a><span class="badge badge-primary" @text:categories/></a></p>
 """
 HTML_URL_BASE = 'https://paperswithcode.com/'
-NUM_PAGES_READ = {'trending': 1, 'latest': 2, 'greatest': 3}
+NUM_PAGES_READ = {'trending': 1, 'latest': 4, 'greatest': 3}
 ON_SERVERLESS = bool(os.getenv('GCLOUD_PROJECT'))
 PACKAGE_NAME = Path(__file__).parent.stem
 REPO_URL = 'https://github.com/ml-feeds/pwc-feeds'
