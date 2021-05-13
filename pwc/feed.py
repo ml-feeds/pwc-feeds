@@ -65,6 +65,8 @@ class Feed:
             description = f'{item["description"]} <p>Code: <a href="{item["code_link"]}">{item["code_link"]}</a></p>'
             entry.description(CDATA(description))
             for category in item['categories']:
+                if category.startswith('+') and category[1:].isdigit():  # Ex: +1, +2
+                    continue
                 category = category.capitalize() if category.isupper() else category
                 entry.category(term=category)
             if is_debug_logged:
