@@ -1,6 +1,6 @@
 cachetools
 feedgen
-flask
+flask<2.0,>=1.0
 hext
 humanize
 more-itertools
