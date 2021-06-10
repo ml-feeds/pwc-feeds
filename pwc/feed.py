@@ -64,6 +64,7 @@ class Feed:
             # description = '\n\n'.join((item['description'], item['code_link']))
             description = f'{item["description"]} <p>Code: <a href="{item["code_link"]}">{item["code_link"]}</a></p>'
             entry.description(CDATA(description))
+            entry.comments(item["code_link"])
             for category in item['categories']:
                 if category.startswith('+') and category[1:].isdigit():  # Ex: +1, +2
                     continue
