@@ -14,7 +14,7 @@ flask==1.1.4
     # via -r requirements.in
 hext==0.2.5
     # via -r requirements.in
-humanize==3.7.1
+humanize==3.9.0
     # via -r requirements.in
 itsdangerous==1.1.0
     # via flask
