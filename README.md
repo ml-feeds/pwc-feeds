@@ -1,5 +1,5 @@
 # pwc-feeds
-**pwc-feeds** uses Python 3.8 to serve RSS feeds for Papers With Code. 
+**pwc-feeds** uses Python 3.9 to serve RSS feeds for Papers With Code. 
 As a disclaimer, it has no affiliation with Papers With Code.
 
 ## Links
