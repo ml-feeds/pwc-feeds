@@ -52,9 +52,11 @@ class Feed:
         feed = self._init_feed()
         is_debug_logged = self._is_debug_logged
         for item in items:
-            if item["code_link"].startswith("https://github.com/"):
-                item["code_author"] = item["code_link"].removeprefix("https://github.com/").split("/")[0]
-                item["title"] = "/" + item["code_author"] + "/ " + item["title"]
+            for website in ("https://github.com/", "https://gitlab.com/"):
+                if item["code_link"].startswith(website):
+                    item["code_author"] = item["code_link"].removeprefix(website).split("/")[0]
+                    item["title"] = "/" + item["code_author"] + "/ " + item["title"]
+                    break
             if 'categories' not in item:
                 item['categories'] = []
             elif isinstance(item['categories'], str):
