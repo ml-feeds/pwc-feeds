@@ -20,7 +20,7 @@ itsdangerous==2.1.0
     # via flask
 jinja2==3.0.3
     # via flask
-lxml==4.8.0
+lxml==4.9.1
     # via feedgen
 markupsafe==2.1.0
     # via jinja2
