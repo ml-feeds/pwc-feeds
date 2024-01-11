@@ -18,7 +18,7 @@ humanize==4.0.0
     # via -r requirements.in
 itsdangerous==2.1.0
     # via flask
-jinja2==3.0.3
+jinja2==3.1.3
     # via flask
 lxml==4.8.0
     # via feedgen
