@@ -25,6 +25,7 @@ NUM_PAGES_READ = {'trending': 2, 'latest': 5, 'greatest': 3}
 ON_SERVERLESS = bool(os.getenv('GCLOUD_PROJECT'))
 PACKAGE_NAME = Path(__file__).parent.stem
 REPO_URL = 'https://github.com/ml-feeds/pwc-feeds'
+REQUEST_TIMEOUT = 5  # A higher value risks excessive serverless billing.
 USER_AGENT = 'Mozilla/5.0'
 
 LOGGING = {  # Ref: https://docs.python.org/3/howto/logging.html#configuring-logging

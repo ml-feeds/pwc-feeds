@@ -1,7 +1,9 @@
 from functools import lru_cache
 import json
 import logging
+import socket
 from typing import cast, Tuple
+from urllib.error import URLError
 from urllib.request import Request, urlopen
 
 from cachetools.func import ttl_cache
@@ -16,6 +18,13 @@ from pwc import config
 config.configure_logging()
 
 log = logging.getLogger(__name__)
+
+def _fetch_url(request: Request) -> bytes:
+    try:
+        return cast(bytes, urlopen(request, timeout=config.REQUEST_TIMEOUT).read())
+    except (URLError, socket.timeout) as e:
+        log.warning("Timeout or error fetching %s: %s", request.full_url, e)
+        raise
 
 
 class Feed:
@@ -85,7 +94,7 @@ class Feed:
     def feed(self) -> bytes:
         feed_type_desc = self._feed_type_desc
         log.debug(f'Reading %s HTML pages %s.', len(self._html_requests), feed_type_desc)
-        texts = tuple(cast(bytes, urlopen(html_request).read()) for html_request in self._html_requests)
+        texts = tuple(_fetch_url(req) for req in self._html_requests)
         log.info('HTML inputs %s have sizes: %s', feed_type_desc, ', '.join(humanize_len(text) for text in texts))
         text = self._output(texts)
         log.info('XML output %s has size %s.', feed_type_desc, humanize_len(text))
